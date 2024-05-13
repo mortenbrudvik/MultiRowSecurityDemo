@@ -1,11 +1,10 @@
 ﻿
 namespace TestConsole;
 
-public class DatabaseService
+public class DatabaseService(string connectionString)
 {
     public bool InitDatbase(string dbName)
     {
-        var connectionString = "Server=localhost\\SQLEXPRESS;Integrated Security=True";
         var database = new DatabaseManager(connectionString, dbName);
         
         if(database.Exist())
