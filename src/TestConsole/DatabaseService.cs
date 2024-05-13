@@ -16,15 +16,15 @@ public class DatabaseService(string connectionString, string dbName)
         
         database.Create();
         
-        database.ExecuteSqlScript(@".\Tables\Customers.sql");
-        database.ExecuteSqlScript(@".\Tables\Users.sql");
-        database.ExecuteSqlScript(@".\Tables\Tasks.sql");
+        database.ExecuteSqlScript(@".\Database\Customers.sql");
+        database.ExecuteSqlScript(@".\Database\Users.sql");
+        database.ExecuteSqlScript(@".\Database\Tasks.sql");
         
-        // database.ExecuteSqlScript(@".\Tables\CreateSecuritySchema.sql");
-        // database.ExecuteSqlScript(@".\Tables\CreateSecurityFunction.sql");
-        // database.ExecuteSqlScript(@".\Tables\CreateSecurityPolicy.sql");
+        database.ExecuteSqlScript(@".\Database\CreateSecuritySchema.sql");
+        database.ExecuteSqlScript(@".\Database\CreateSecurityFunction.sql");
+        database.ExecuteSqlScript(@".\Database\CreateSecurityPolicy.sql");
         
-        database.ExecuteSqlScript(@".\Tables\SeedDatabase.sql");
+        database.ExecuteSqlScript(@".\Database\SeedDatabase.sql");
 
         
         

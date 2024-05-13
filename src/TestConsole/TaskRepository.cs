@@ -1,27 +1,25 @@
-﻿namespace TestConsole;
-using System.Collections.Generic;
+﻿using Dapper;
 using System.Data.SqlClient;
+
+namespace TestConsole;
 
 public class TaskRepository(string connectionString)
 {
     public List<Task> GetAllTasks()
     {
-        var tasks = new List<Task>();
         using var connection = new SqlConnection(connectionString);
         connection.Open();
-        var command = new SqlCommand("SELECT TaskId, Description, CustomerId FROM Tasks", connection);
-
-        using var reader = command.ExecuteReader();
-        while (reader.Read())
-        {
-            tasks.Add(new Task
-            {
-                TaskId = reader.GetInt32(0),
-                Description = reader.GetString(1),
-                CustomerId = reader.GetInt32(2)
-            });
-        }
-
-        return tasks;
+        
+        SetCustomerContext(connection, 1);
+        
+        return connection.Query<Task>("SELECT TaskId, Description, CustomerId FROM Tasks").AsList();
+    }
+    
+    public void SetCustomerContext(SqlConnection connection, int customerId)
+    {
+        using var command = new SqlCommand("EXEC sp_set_session_context @key, @value", connection);
+        command.Parameters.AddWithValue("@key", "CustomerId");
+        command.Parameters.AddWithValue("@value", customerId);
+        command.ExecuteNonQuery();
     }
 }

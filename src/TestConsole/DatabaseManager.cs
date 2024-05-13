@@ -86,20 +86,5 @@ public class DatabaseManager(string connectionString, string databaseName)
         }
     }
     
-    public void SetSessionContext(string key, object value)
-    {
-        try
-        {
-            using (var connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                connection.Execute("EXEC sp_set_session_context @key, @value", new { key, value });
-            }
-            Console.WriteLine("Session context set successfully.");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine("Error setting session context: " + ex.Message);
-        }
-    }
+
 }
