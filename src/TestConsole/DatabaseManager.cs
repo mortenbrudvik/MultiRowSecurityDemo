@@ -65,13 +65,41 @@ public class DatabaseManager(string connectionString, string databaseName)
         Console.WriteLine("Database deleted successfully.");
     }
     
-    public void CreateTableFromFile(string filePath)
+    public void ExecuteSqlScript(string filePath)
     {
-        var query = File.ReadAllText(filePath);
-
-        using var connection = new SqlConnection($"{connectionString};Database={databaseName}");
-        
-        connection.Open();
-        connection.Execute(query);
+        try
+        {
+            var script = File.ReadAllText(filePath);
+            using (var connection = new SqlConnection($"{connectionString};Database={databaseName}"))
+            {
+                connection.Open();
+                using (var command = new SqlCommand(script, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
+            Console.WriteLine("Script executed successfully: " + filePath);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Failed to execute script: " + ex.Message);
+        }
+    }
+    
+    public void SetSessionContext(string key, object value)
+    {
+        try
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                connection.Execute("EXEC sp_set_session_context @key, @value", new { key, value });
+            }
+            Console.WriteLine("Session context set successfully.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error setting session context: " + ex.Message);
+        }
     }
 }
