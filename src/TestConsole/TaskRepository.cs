@@ -14,12 +14,10 @@ public class TaskRepository(string connectionString)
         
         return connection.Query<Task>("SELECT TaskId, Description, CustomerId FROM Tasks").AsList();
     }
-    
-    public void SetCustomerContext(SqlConnection connection, int customerId)
+
+    private void SetCustomerContext(SqlConnection connection, int customerId)
     {
-        using var command = new SqlCommand("EXEC sp_set_session_context @key, @value", connection);
-        command.Parameters.AddWithValue("@key", "CustomerId");
-        command.Parameters.AddWithValue("@value", customerId);
-        command.ExecuteNonQuery();
+        const string query = "EXEC sp_set_session_context @key = N'CustomerID', @value = @CustomerID";
+        connection.Execute(query, new { CustomerID = customerId });
     }
 }

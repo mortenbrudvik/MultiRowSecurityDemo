@@ -7,6 +7,8 @@ var databaseService = new DatabaseService(connectionString, "MultiRowLevelSecuri
 databaseService.InitDatabase();
 
 var tasks = databaseService.GetAllTasks();
+var queryStore = new QueryStore(connectionString + ";Database=MultiRowLevelSecurityDemo");
+//queryStore.GetQueryStoreData();
 
 Console.WriteLine("Tasks:");
 foreach (var task in tasks)

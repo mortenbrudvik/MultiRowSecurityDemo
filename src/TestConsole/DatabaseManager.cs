@@ -85,6 +85,9 @@ public class DatabaseManager(string connectionString, string databaseName)
             Console.WriteLine("Failed to execute script: " + ex.Message);
         }
     }
-    
 
+    public void EnableQueryStore()
+    {
+        QueryStore.EnableQueryStore(new SqlConnection(connectionString), databaseName);
+    }
 }
