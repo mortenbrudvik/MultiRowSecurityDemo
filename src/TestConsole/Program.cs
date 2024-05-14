@@ -7,14 +7,20 @@ var databaseService = new DatabaseService(connectionString, "MultiRowLevelSecuri
 databaseService.InitDatabase();
 
 var tasks = databaseService.GetAllTasks();
-var queryStore = new QueryStore(connectionString + ";Database=MultiRowLevelSecurityDemo");
-//queryStore.GetQueryStoreData();
 
 Console.WriteLine("Tasks:");
 foreach (var task in tasks)
 {
     Console.WriteLine($"TaskId: {task.TaskId}, Description: {task.Description}, CustomerId: {task.CustomerId}");
 }
+
+var queryStore = new QueryStore(connectionString + ";Database=MultiRowLevelSecurityDemo");
+var queryStoreData = queryStore.GetQueryStoreData();
+foreach (var query in queryStoreData)
+{
+    Console.WriteLine($"QueryId: {query.QueryId}, LastExecutionTime: {query.LastExecutionTime}, QueryText: {query.QueryText}, ExecutionCount: {query.ExecutionCount}");
+}
+
 
 Console.WriteLine("Press Enter to continue...");
 
