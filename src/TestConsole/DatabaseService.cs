@@ -20,6 +20,7 @@ public class DatabaseService(string connectionString, string dbName)
         database.ExecuteSqlScript(@".\Database\Customers.sql");
         database.ExecuteSqlScript(@".\Database\Users.sql");
         database.ExecuteSqlScript(@".\Database\Tasks.sql");
+        database.ExecuteSqlScript(@".\Database\Notes.sql");
         
         database.ExecuteSqlScript(@".\Database\CreateSecuritySchema.sql");
         database.ExecuteSqlScript(@".\Database\CreateSecurityFunction.sql");
@@ -30,9 +31,15 @@ public class DatabaseService(string connectionString, string dbName)
         return true;
     }
     
-    public List<Task> GetAllTasks()
+    public List<Task> GetTasks()
     {
         var taskRepository = new TaskRepository($"{connectionString};Database={dbName}");
         return taskRepository.GetAllTasks();
+    }
+    
+    public List<Note> GetNotes()
+    {
+        var noteRepository = new NoteRepository($"{connectionString};Database={dbName}");
+        return noteRepository.GetAllNotes();
     }
 }

@@ -71,7 +71,12 @@ public class DatabaseManager(string connectionString, string databaseName)
         {
             var script = File.ReadAllText(filePath);
             
-            Execute([script]);
+            var commands = script.Split(["GO", "go", "Go", "gO"], StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+            Console.Out.WriteLine("Executing script: " +filePath + " - " + commands.Length + " commands found.");
+
+            Execute(commands);
+            Console.WriteLine($"Script executed successfully. File: {filePath} ({commands.Length}) ");
         }
         catch (Exception ex)
         {
@@ -93,7 +98,6 @@ public class DatabaseManager(string connectionString, string databaseName)
                 }
             }
         }
-        Console.WriteLine("Script executed successfully.");
     }
 
     public void EnableQueryStore()
