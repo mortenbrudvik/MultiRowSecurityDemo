@@ -83,20 +83,15 @@ public class DatabaseManager(string connectionString, string databaseName)
             Console.WriteLine("Failed to execute script: " + ex.Message);
         }
     }
-    
-    public void Execute(string[] commands)
+
+    private void Execute(string[] commands)
     {
-        using (var connection = new SqlConnection($"{connectionString};Database={databaseName}"))
+        using var connection = new SqlConnection($"{connectionString};Database={databaseName}");
+        connection.Open();
+        
+        foreach (var command in commands)
         {
-            connection.Open();
-            foreach (var command in commands)
-            {
-                // Trim to avoid issues with empty commands or extra whitespace
-                if (!string.IsNullOrWhiteSpace(command))
-                {
-                    connection.Execute(command); // Execute each command using Dapper
-                }
-            }
+            connection.Execute(command);
         }
     }
 
