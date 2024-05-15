@@ -70,20 +70,30 @@ public class DatabaseManager(string connectionString, string databaseName)
         try
         {
             var script = File.ReadAllText(filePath);
-            using (var connection = new SqlConnection($"{connectionString};Database={databaseName}"))
-            {
-                connection.Open();
-                using (var command = new SqlCommand(script, connection))
-                {
-                    command.ExecuteNonQuery();
-                }
-            }
-            Console.WriteLine("Script executed successfully: " + filePath);
+            
+            Execute([script]);
         }
         catch (Exception ex)
         {
             Console.WriteLine("Failed to execute script: " + ex.Message);
         }
+    }
+    
+    public void Execute(string[] commands)
+    {
+        using (var connection = new SqlConnection($"{connectionString};Database={databaseName}"))
+        {
+            connection.Open();
+            foreach (var command in commands)
+            {
+                // Trim to avoid issues with empty commands or extra whitespace
+                if (!string.IsNullOrWhiteSpace(command))
+                {
+                    connection.Execute(command); // Execute each command using Dapper
+                }
+            }
+        }
+        Console.WriteLine("Script executed successfully.");
     }
 
     public void EnableQueryStore()

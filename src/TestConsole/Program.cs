@@ -21,7 +21,6 @@ foreach (var query in queryStoreData)
     Console.WriteLine($"QueryId: {query.QueryId}, LastExecutionTime: {query.LastExecutionTime}, QueryText: {query.QueryText}, ExecutionCount: {query.ExecutionCount}");
 }
 
-
 Console.WriteLine("Press Enter to continue...");
 
 Console.ReadLine();

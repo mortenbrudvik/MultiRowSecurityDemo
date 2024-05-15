@@ -21,6 +21,7 @@ public class DatabaseService(string connectionString, string dbName)
         database.ExecuteSqlScript(@".\Database\Users.sql");
         database.ExecuteSqlScript(@".\Database\Tasks.sql");
         
+        database.ExecuteSqlScript(@".\Database\CreateSecuritySchema.sql");
         database.ExecuteSqlScript(@".\Database\CreateSecurityFunction.sql");
         database.ExecuteSqlScript(@".\Database\CreateSecurityPolicy.sql");
         
